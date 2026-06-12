@@ -219,3 +219,152 @@ You are currently on the main branch at commit C.
 Now you run:
 git checkout -b add-login-feature
 Git creates a new branch pointing to the same commit:
+main
+  |
+  A --- B --- C
+              ^
+              |
+     add-login-feature
+And Git moves you onto the new branch.
+________________________________________
+What Does checkout Mean?
+The word checkout means:
+"Switch my working directory and HEAD to another branch or commit."
+For example:
+git checkout main
+moves you back to the main branch.
+________________________________________
+What Does -b Mean?
+The -b option means:
+"Create a new branch before switching."
+Without -b:
+git checkout add-login-feature
+Git expects the branch already exists.
+If it doesn't exist, you'll get an error like:
+error: pathspec 'add-login-feature' did not match any file(s) known to git
+Using -b tells Git to create it first.
+________________________________________
+Example Step-by-Step
+Assume your repository contains:
+main
+  |
+  A --- B --- C
+Current branch:
+git branch
+Output:
+* main
+Create a feature branch:
+git checkout -b add-login-feature
+Output:
+Switched to a new branch 'add-login-feature'
+Now:
+git branch
+Output:
+* add-login-feature
+  main
+The * indicates your current branch.
+________________________________________
+What Happens After You Make Changes?
+Suppose you edit files and commit:
+git add .
+git commit -m "Add login page"
+Git creates a new commit:
+main
+  |
+  A --- B --- C
+
+add-login-feature
+  |
+  A --- B --- C --- D
+Notice:
+•	main still points to C
+•	add-login-feature points to D
+Your work is isolated from main.
+________________________________________
+Why Is This Useful?
+Imagine you accidentally break something while developing.
+Because you're working in a separate branch:
+main (safe)
+add-login-feature (experimental)
+The production-ready code remains untouched.
+This is why teams rarely develop directly on main.
+________________________________________
+Viewing Your Current Branch
+Check where you are:
+git branch
+Example:
+* add-login-feature
+  main
+or
+git status
+Output:
+On branch add-login-feature
+________________________________________
+Pushing the New Branch to GitHub
+Creating the branch locally does not automatically create it on GitHub.
+You must push it:
+git push origin add-login-feature
+Now GitHub will also have:
+main
+add-login-feature
+________________________________________
+What Does origin Mean?
+When you clone a repository:
+git clone https://github.com/user/project.git
+Git automatically creates a remote called:
+origin
+You can view remotes:
+git remote -v
+Example:
+origin https://github.com/user/project.git
+So:
+git push origin add-login-feature
+means:
+Push my local branch add-login-feature to the remote repository named origin.
+________________________________________
+How to Return to Main
+At any time:
+git checkout main
+or
+git switch main
+Now you're back on the main branch.
+________________________________________
+Visual Example
+Before creating a branch:
+main
+ |
+ A --- B --- C
+Run:
+git checkout -b add-login-feature
+After creating branch:
+main
+ |
+ A --- B --- C
+               \
+                add-login-feature
+After making two commits:
+main
+ |
+ A --- B --- C
+
+add-login-feature
+ |
+ A --- B --- C --- D --- E
+After merging:
+main
+ |
+ A --- B --- C --- D --- E
+The feature becomes part of main.
+________________________________________
+Modern Alternative
+Newer Git versions recommend:
+git switch -c add-login-feature
+instead of:
+git checkout -b add-login-feature
+because switch is dedicated to branch operations and is easier to understand.
+Both commands achieve the same result:
+git checkout -b add-login-feature
+and
+git switch -c add-login-feature
+→ create a new branch and immediately move you to it.
+
